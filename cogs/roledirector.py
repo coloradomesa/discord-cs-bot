@@ -6,6 +6,11 @@ from os import environ
 
 
 class RoleDirector():
+    """Adjust your account and change roles"""
+
+    def __str__(self):
+        return "AccountManagement"
+
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
         self.student_roleid = environ.get('CSMS_DISCORD_STUDENT_ROLE_ID')
@@ -15,9 +20,12 @@ class RoleDirector():
         self.alumni_role = None
         self.admin_role = None
 
+
     @commands.command(name='namechange', pass_context=True)
     async def namechange(self, ctx):
-        await self._namechange(ctx.message.author, ctx.message.server)
+        """Set your nickname and choose a role"""
+        server = await self.bot.get_server(environ.get('CSMS_DISCORD_SERVER_ID'))
+        await self._namechange(ctx.message.author, server if server is not None else ctx.message.server)
 
     async def _namechange(self, member: discord.Member, server: discord.Server):
         for role in server.roles:
@@ -77,8 +85,8 @@ How would you like your name displayed?
         if member.server.id == environ.get('CSMS_DISCORD_SERVER_ID'):
             await self._namechange(member, member.server)
 
-    @commands.command(pass_context=True)
-    async def menutest(self, ctx):
+    @commands.command(pass_context=True, hidden=True)
+    async def _menutest(self, ctx):
         template = """
 Vote an option:
 🇦 this one ({})
@@ -103,15 +111,15 @@ Vote an option:
             if res.user != self.bot.connection.user:
                 await self.bot.remove_reaction(menu, res.reaction.emoji, res.user)
 
-    @commands.group(pass_context=True)
-    async def cool(self, ctx):
+    @commands.group(pass_context=True, hidden=True)
+    async def _cool(self, ctx):
         """Says if a user is cool.
         In reality this just checks if a subcommand is being invoked.
         """
         if ctx.invoked_subcommand is None:
             await self.bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
 
-    @cool.command(name='bot')
+    @_cool.command(name='bot')
     async def _bot(self):
         """Is the bot cool?"""
         await self.bot.say('Yes, the bot is cool.')

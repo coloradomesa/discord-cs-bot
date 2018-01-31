@@ -3,8 +3,7 @@ from discord.ext import commands
 from os import listdir, environ
 from os.path import isfile, join
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
+description = '''Chat Bot For The CMU CS Discord Server
 There are a number of utility commands being showcased here.'''
 
 # this specifies what extensions to load when the bot starts up (from this directory)
@@ -23,7 +22,7 @@ async def on_ready():
         for role in server.roles:
             print("    ", role.name, ":", role.id)
 
-@bot.command()
+@bot.command(hidden=True)
 async def load(extension_name : str):
     """Loads an extension."""
     try:
@@ -33,22 +32,11 @@ async def load(extension_name : str):
         return
     await bot.say("{} loaded.".format(extension_name))
 
-@bot.command()
+@bot.command(hidden=True)
 async def unload(extension_name : str):
     """Unloads an extension."""
     bot.unload_extension(extension_name)
     await bot.say("{} unloaded.".format(extension_name))
-
-@bot.command()
-async def add(left : int, right : int):
-    """Adds two numbers together."""
-    await bot.say(left + right)
-
-@bot.command()
-async def repeat(times : int, content='repeating...'):
-    """Repeats a message multiple times."""
-    for i in range(times):
-        await bot.say(content)
 
 if __name__ == "__main__":
     for extension in [f.replace('.py', '') for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))]:
