@@ -24,7 +24,7 @@ class RoleDirector():
     @commands.command(name='namechange', pass_context=True)
     async def namechange(self, ctx):
         """Set your nickname and choose a role"""
-        server = await self.bot.get_server(environ.get('CSMS_DISCORD_SERVER_ID'))
+        server = self.bot.get_server(environ.get('CSMS_DISCORD_SERVER_ID'))
         await self._namechange(ctx.message.author, server if server is not None else ctx.message.server)
 
     async def _namechange(self, member: discord.Member, server: discord.Server):
