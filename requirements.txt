@@ -1,0 +1,9 @@
+discord.py[voice]
+lxml
+psutil
+asyncpg>=0.12.0
+click
+parsedatetime
+lru_dict
+python-dateutil
+config
