@@ -31,7 +31,7 @@ class Misc:
         embedout.url = self.packturl
         imgurl = "http:{}".format(info['img_src'].replace(" ", "%20"))
         embedout.set_image(url=imgurl)
-        embedout.set_footer(text=f"Time Left: {str(timeleft)}")
+        embedout.set_footer(text=f"Time Left: {str(timeleft)} (expires at {datetime.datetime.fromtimestamp(int(info['expire_timestamp']), tz=datetime.timezone.utc)} UTC)")
         await self.bot.send_message(ctx.message.channel, embed=embedout)
 
     async def scrape_packt(self):
