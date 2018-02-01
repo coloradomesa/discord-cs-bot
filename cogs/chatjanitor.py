@@ -16,5 +16,6 @@ class ChatJanitor:
         count = int(count)
         await self.bot.purge_from(ctx.message.channel, limit=count)
 
+
 def setup(bot):
     bot.add_cog(ChatJanitor(bot))

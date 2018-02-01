@@ -7,3 +7,4 @@ parsedatetime
 lru_dict
 python-dateutil
 config
+bs4
