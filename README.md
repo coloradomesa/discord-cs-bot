@@ -22,9 +22,9 @@ Until then, you can make one yourself based on the python image in the docker hu
 Example:
 
 ```dockerfile
-FROM python:3-alpine
+FROM python:3.6
 COPY . /app
 WORKDIR /app
-RUN "pip install -r requirements.txt
-CMD "python3 -m csms_bot.py"
+RUN pip install -r requirements.txt
+CMD python3 csms_bot.py
 ```
