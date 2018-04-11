@@ -1,16 +1,15 @@
 import discord
 from discord.ext import commands
-from .utils import checks
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import datetime
-
-from os import environ
+from csbot import logger_setup
 
 
 class Misc:
     def __init__(self, bot: discord.ext.commands.Bot):
         self.bot = bot
+        self.logger = logger_setup(self.__class__.__name__)
         self.packturl = "https://www.packtpub.com/packt/offers/free-learning"
 
     def __str__(self):

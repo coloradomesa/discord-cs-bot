@@ -1,0 +1,3 @@
+import csbot
+
+csbot.run()
