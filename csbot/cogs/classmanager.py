@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 from csbot import logger_setup, get_dbclient
-import pymongo.errors
-from os import environ
 
 
 class ClassManager:
@@ -15,11 +13,9 @@ class ClassManager:
         if self.dbclient is not None:
             self.db = self.dbclient.get_database()
 
-
-
     @commands.group(name='class', pass_context=True)
     async def classmgr(self, ctx):
-        """Create/join/manage class channels and roles"""
+        """Create/join/manage class channels and roles. Creation/deletion delegated to admins/instructors ONLY."""
         self.logger.debug(f"{ctx.invoked_subcommand} command ran by {ctx.message.author.name}")
         self.logger.debug(f"Roles on server: {', '.join([role.name for role in ctx.message.server.roles])}")
         # Fetch the collection every time \class is called
@@ -52,7 +48,7 @@ class ClassManager:
 
     @classmgr.command(name="leave", pass_context=True)
     async def classleave(self, ctx, cid):
-        """Leave a class. Usaeg: \class leave <classid>"""
+        """Leave a class. Usage: \class leave <classid>"""
         class_entry = self.class_entries.find_one({'id': cid})
         if class_entry is not None:
             role = discord.utils.get(ctx.message.server.roles, id=class_entry['roleid'])
@@ -80,7 +76,7 @@ class ClassManager:
     @commands.has_any_role("Instructors", "Admin")
     @classmgr.command(name="create", pass_context=True)
     async def classcreate(self, ctx, name):
-        """Create class from a name, ID auto-generated. Usage: \class create <class name>"""
+        """Create a class, ID auto-generated. Usage: \class create <class name>"""
         role = await self.bot.create_role(
             ctx.message.server,
             name=f"{ctx.message.author.name}-{name}",
