@@ -16,7 +16,7 @@ class ClassManager:
     @commands.group(name='class', pass_context=True)
     async def classmgr(self, ctx):
         """Create/join/manage class channels and roles. Creation/deletion delegated to admins/instructors ONLY."""
-        self.logger.debug(f"{ctx.invoked_subcommand} command ran by {ctx.message.author.name}")
+        self.logger.info(f"{ctx.invoked_subcommand} command ran by {ctx.message.author.name}")
         self.logger.debug(f"Roles on server: {', '.join([role.name for role in ctx.message.server.roles])}")
         # Fetch the collection every time \class is called
         self.class_entries = self.db.get_collection(f"{ctx.message.server.id}-classmgr")

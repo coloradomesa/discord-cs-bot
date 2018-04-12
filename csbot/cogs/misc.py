@@ -15,10 +15,11 @@ class Misc:
     def __str__(self):
         return "Miscellaneous"
 
-    @commands.command()
-    async def git(self):
+    @commands.command(pass_context=True)
+    async def git(self, ctx):
         """Show the url for the github repository"""
         await self.bot.say("View my github at https://github.com/coloradomesa/discord-cs-bot")
+        self.logger.info(f"Sent git info to channel #{ctx.message.channel.name} in {ctx.message.server.name}")
 
     @commands.command(pass_context=True)
     async def packt(self, ctx):
@@ -32,6 +33,7 @@ class Misc:
         embedout.set_image(url=imgurl)
         embedout.set_footer(text=f"Time Left: {str(timeleft)} (expires at {datetime.datetime.fromtimestamp(int(info['expire_timestamp']), tz=datetime.timezone.utc)} UTC)")
         await self.bot.send_message(ctx.message.channel, embed=embedout)
+        self.logger.info(f"Sent git info to channel #{ctx.message.channel.name} in {ctx.message.server.name}")
 
     async def scrape_packt(self):
         info = {}
