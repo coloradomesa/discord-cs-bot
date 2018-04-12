@@ -15,6 +15,7 @@ class ChatJanitor:
         """Clear a chat channel of X lines"""
         count = int(count)
         await self.bot.purge_from(ctx.message.channel, limit=count)
+        self.logger.info(f"Cleared channel {ctx.message.server.name}/#{ctx.message.channel.name} of {count} lines.")
 
 
 def setup(bot):
