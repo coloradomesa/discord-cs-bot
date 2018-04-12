@@ -9,7 +9,8 @@ class ChatJanitor:
         self.bot = bot
         self.logger = logger_setup(self.__class__.__name__)
 
-    @commands.command(hidden=True, pass_context=True)
+    @commands.has_any_role("Instructors", "Admin")
+    @commands.command(pass_context=True)
     async def clean(self, ctx, count):
         """Clear a chat channel of X lines"""
         count = int(count)

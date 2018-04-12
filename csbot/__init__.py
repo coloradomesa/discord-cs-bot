@@ -16,11 +16,7 @@ There are a number of utility commands being showcased here.'''
 
 # this specifies what extensions to load when the bot starts up (from this directory)
 cogs_dir = "cogs"
-DISABLED_COGS_LIST = [
-    "csbot.cogs.roledirector",
-    "csbot.cogs.misc",
-    "csbot.cogs.chatjanitor"
-]
+DISABLED_COGS_LIST = []
 
 bot = commands.Bot(command_prefix='\\', description=description)
 
@@ -117,3 +113,10 @@ def run(token=""):
     except KeyError as e:
         logger.error("API token required for discord api. Use 'DISCORD_API_TOKEN' to set the token.")
     bot.run(token)
+
+
+@bot.event
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CheckFailure):
+        await bot.send_message(ctx.message.channel, "You do not have permission to use this command.")
+        return
