@@ -37,7 +37,7 @@ async def on_ready():
     joinlink = f"https://discordapp.com/oauth2/authorize?client_id={app_info.id}&scope=bot&permissions=0"
     joinmsg = f"This bot is currently not joined to any servers. Join me to a server by following this link: {joinlink}"
     logger.debug(f"Invite bot to servers using this link: {joinlink}")
-    if len(bot.servers) < 1:
+    if len(bot.guilds) < 1:
         logger.warning(joinmsg)
 
 

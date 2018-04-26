@@ -15,13 +15,24 @@ class Misc:
     def __str__(self):
         return "Miscellaneous"
 
-    @commands.command(pass_context=True)
+    @commands.command()
+    @commands.has_any_role("Instructors", "Admins")
+    async def clear(self, ctx, count):
+        """Clear a chat channel of N lines"""
+        async with ctx.message.channel.typing():
+            count = int(count)
+            await ctx.message.channel.purge(limit=count)
+            logging.debug(f"Cleared {count} messages from channel {ctx.message.channel} in server {ctx.message.guild}")
+            outmsg = await ctx.message.channel.send(f"✅Cleared {count} messages")
+        await self.del_msgs(outmsg)
+
+    @commands.command()
     async def git(self, ctx):
         """Show the url for the github repository"""
-        await self.bot.say("View my github at https://github.com/coloradomesa/discord-cs-bot")
+        await ctx.send("View my github at https://github.com/coloradomesa/discord-cs-bot")
         self.logger.info(f"Sent git info to channel #{ctx.message.channel.name} in {ctx.message.server.name}")
 
-    @commands.command(pass_context=True)
+    @commands.command()
     async def packt(self, ctx):
         """Show the free book of the day from Packtpub publishing"""
         info = await self.scrape_packt()
@@ -32,7 +43,7 @@ class Misc:
         imgurl = "http:{}".format(info['img_src'].replace(" ", "%20"))
         embedout.set_image(url=imgurl)
         embedout.set_footer(text=f"Time Left: {str(timeleft)} (expires at {datetime.datetime.fromtimestamp(int(info['expire_timestamp']), tz=datetime.timezone.utc)} UTC)")
-        await self.bot.send_message(ctx.message.channel, embed=embedout)
+        await ctx.send(embed=embedout)
         self.logger.info(f"Sent git info to channel #{ctx.message.channel.name} in {ctx.message.server.name}")
 
     async def scrape_packt(self):
